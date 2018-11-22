@@ -32,6 +32,11 @@ void insert_node(node *root, char *word) {
   unsigned int index;
   node *current = root;
   for (unsigned int i = 0; i < strlen(word); i++) {
+    if (!(isalpha(word[i]))) {
+      continue;
+    }
+    word[i] = tolower(word[i]);
+
     if (current->children[CHAR_TO_INDEX(word[i])] == NULL) {
       current->children[CHAR_TO_INDEX(word[i])] = get_node();
     }
@@ -44,7 +49,6 @@ void insert_node(node *root, char *word) {
 
 bool search(node *root, char *word) {
   for (unsigned int i = 0; i < strlen(word); i++) {
-
     if (root->children[CHAR_TO_INDEX(word[i])] == NULL) {
       return false;
     }
@@ -53,19 +57,20 @@ bool search(node *root, char *word) {
   return root->is_end_of_word;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   node *p = get_node();
-  char *ch = "abelha";
-  insert_node(p, ch);
-  char *ch1 = "carro";
-  insert_node(p, ch1);
-  char *ch2 = "porta";
-  insert_node(p, ch2);
-  char *ch3 = "porra";
-  insert_node(p, ch3);
-  printf("%d\n", search(p, "abelhaa"));
-  printf("%d\n", search(p, "carro"));
-  printf("%d\n", search(p, "porsa"));
+  FILE *f;
+  char x[1024];
+
+  f = fopen(argv[1],"r");
+
+  while (fscanf(f, " %1023s", x) == 1) {
+    insert_node(p, x);
+  }
+
+  printf("%d\n", search(p, "filipe"));
+  printf("%d\n", search(p, "method"));
+  printf("%d\n", search(p, "or"));
 
   return 0;
 }
