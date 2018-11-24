@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdbool.h>
 
 #define ALPHABET_SIZE 26
@@ -44,7 +45,7 @@ void insert_node(node *root, char *word) {
     current->ch = word[i];
   }
   current->is_end_of_word = true;
-  current->word_counting += 1;
+  current->word_counting++;
 }
 
 bool search(node *root, char *word) {
@@ -57,20 +58,32 @@ bool search(node *root, char *word) {
   return root->is_end_of_word;
 }
 
+int freq_word(node *root, char *word) {
+  for (unsigned int i = 0; i < strlen(word); i++) {
+    if (root->children[CHAR_TO_INDEX(word[i])] == NULL) {
+      return false;
+    }
+    root = root->children[CHAR_TO_INDEX(word[i])];
+  }
+  return root->word_counting;
+}
+
 int main(int argc, char *argv[]) {
   node *p = get_node();
   FILE *f;
   char x[1024];
 
-  f = fopen(argv[1],"r");
+  if (strcmp(argv[1], "--freq-word") == 0) {
+    f = fopen(argv[3],"r");
 
-  while (fscanf(f, " %1023s", x) == 1) {
-    insert_node(p, x);
+    while (fscanf(f, "%1023s", x) == 1) {
+      insert_node(p, x);
+    }
+
+    printf("%d\n", freq_word(p, argv[2]));
+
   }
 
-  printf("%d\n", search(p, "filipe"));
-  printf("%d\n", search(p, "method"));
-  printf("%d\n", search(p, "or"));
 
   return 0;
 }
