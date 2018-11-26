@@ -30,9 +30,9 @@ node *get_node(void) {
 }
 
 void insert_node(node *root, char *word) {
-  unsigned int index;
+  unsigned int index, i;
   node *current = root;
-  for (unsigned int i = 0; i < strlen(word); i++) {
+  for (i = 0; i < strlen(word); i++) {
     if (!(isalpha(word[i]))) {
       continue;
     }
@@ -49,7 +49,8 @@ void insert_node(node *root, char *word) {
 }
 
 bool search(node *root, char *word) {
-  for (unsigned int i = 0; i < strlen(word); i++) {
+  unsigned int i;
+  for (i = 0; i < strlen(word); i++) {
     if (root->children[CHAR_TO_INDEX(word[i])] == NULL) {
       return false;
     }
@@ -59,7 +60,8 @@ bool search(node *root, char *word) {
 }
 
 int freq_word(node *root, char *word) {
-  for (unsigned int i = 0; i < strlen(word); i++) {
+  unsigned int i;
+  for (i = 0; i < strlen(word); i++) {
     if (root->children[CHAR_TO_INDEX(word[i])] == NULL) {
       return false;
     }
